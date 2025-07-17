@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Wish</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ffe0ec, #e0f7ff);
+      text-align: center;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    img.friend-photo {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+    .gift-box {
+      font-size: 60px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .gift-box:hover {
+      transform: scale(1.1);
+    }
+    .message-box {
+      display: none;
+      margin-top: 20px;
+    }
+    .birthday-title {
+      font-size: 24px;
+      color: #ff4081;
+      margin-bottom: 10px;
+    }
+    .msg-line {
+      display: none;
+      font-size: 18px;
+      margin: 10px 0;
+      animation: slideIn 0.5s ease forwards;
+    }
+    .btns {
+      margin-top: 20px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #90caf9;
+      cursor: default;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="friend-photo" src="https://i.ibb.co/hgDtvMK/birthday-friend.jpg" alt="Friend Photo" />
+    <div class="gift-box" onclick="showMessages()">🎁</div>
+    <div class="message-box">
+      <div class="birthday-title" id="title"></div>
+      <div id="messages">
+        <div class="msg-line">Happy Birthday to my officially licensed jogra partner! 😜</div>
+        <div class="msg-line">Tor loge jodi ami na mati taile amar kache dinta osompurno lage—</div>
+        <div class="msg-line">Amra Jogra kori, abar ek second e mishi jai.</div>
+        <div class="msg-line">Ami chai tui amar loge always oula jogra kor, but maya o korich ! 😂</div>
+        <div class="msg-line">May your day be full of cake, gifts, and no fight with me (at least today)! 💝</div>
+      </div>
+      <div class="btns">
+        <button onclick="prevMsg()" id="prevBtn">Previous</button>
+        <button onclick="nextMsg()" id="nextBtn">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("name") || "Friend";
+    document.getElementById("title").innerText = `Happy Birthday ${name}`;
+
+    const lines = document.querySelectorAll(".msg-line");
+    let index = 0;
+
+    function showMessages() {
+      document.querySelector(".message-box").style.display = "block";
+      lines[index].style.display = "block";
+      document.querySelector(".gift-box").style.display = "none";
+      updateButtons();
+    }
+
+    function nextMsg() {
+      if (index < lines.length - 1) {
+        index++;
+        showCurrentLine();
+      }
+    }
+
+    function prevMsg() {
+      if (index > 0) {
+        index--;
+        showCurrentLine();
+      }
+    }
+
+    function showCurrentLine() {
+      lines.forEach((line, i) => {
+        line.style.display = i === index ? "block" : "none";
+      });
+      updateButtons();
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = index === 0;
+      document.getElementById("nextBtn").disabled = index === lines.length - 1;
+    }
+  </script>
+</body>
+</html>
