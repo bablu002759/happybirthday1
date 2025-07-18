@@ -12,10 +12,41 @@
       padding: 20px;
     }
 
+    #input-area {
+      margin-top: 50px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #linkBox {
+      margin-top: 20px;
+      display: none;
+    }
+
     .gift-box {
       font-size: 100px;
       cursor: pointer;
       margin-top: 30px;
+      display: none;
+    }
+
+    .friend-photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 20px auto 10px;
+      display: none;
     }
 
     #titleText {
@@ -51,20 +82,23 @@
         opacity: 0;
       }
     }
-
-    .friend-photo {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 20px auto 10px;
-      display: none;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Friend photo -->
+  <!-- Name Input Area -->
+  <div id="input-area">
+    <h2>Enter your friend's name</h2>
+    <input type="text" id="nameInput" placeholder="e.g. Suma">
+    <button onclick="generateLink()">Generate Link</button>
+
+    <div id="linkBox">
+      <p>Share this link with your friend:</p>
+      <a id="generatedLink" href="#" target="_blank"></a>
+    </div>
+  </div>
+
+  <!-- Friend Photo -->
   <img src="suma.jpg" alt="Friend" class="friend-photo" id="friendPic" />
 
   <!-- Happy Birthday Name -->
@@ -73,7 +107,7 @@
   <!-- Message Box -->
   <div class="message-box" id="messageBox"></div>
 
-  <!-- Gift box only -->
+  <!-- Gift box -->
   <div class="gift-box" id="gift">🎁</div>
 
   <!-- Navigation Buttons -->
@@ -82,7 +116,7 @@
     <button onclick="nextMessage()">Next ➡️</button>
   </div>
 
-  <!-- Music player (hidden) -->
+  <!-- Music -->
   <audio id="birthdayMusic" src="happy.mp3" loop></audio>
 
   <script>
@@ -104,9 +138,21 @@
     const navButtons = document.getElementById('navButtons');
     const friendPic = document.getElementById('friendPic');
     const music = document.getElementById('birthdayMusic');
+    const inputArea = document.getElementById('input-area');
 
     if (name) {
+      inputArea.style.display = 'none';
       gift.style.display = 'block';
+    }
+
+    function generateLink() {
+      const inputName = document.getElementById('nameInput').value.trim();
+      if (inputName) {
+        const link = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(inputName)}`;
+        document.getElementById('generatedLink').href = link;
+        document.getElementById('generatedLink').innerText = link;
+        document.getElementById('linkBox').style.display = 'block';
+      }
     }
 
     gift.addEventListener('click', () => {
@@ -119,7 +165,6 @@
       music.play();
       showMessage();
 
-      // Confetti animation
       for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
