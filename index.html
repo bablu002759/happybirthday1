@@ -2,50 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Birthday</title>
+  <title>Birthday Wish</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(to bottom right, #ffcccc, #ffe6f0);
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #ffe6f0;
       text-align: center;
       padding: 20px;
     }
 
     #input-area {
-      margin-top: 100px;
+      margin-top: 80px;
     }
 
     .gift-box {
       font-size: 80px;
       cursor: pointer;
       display: none;
+      margin-top: 50px;
     }
 
     #titleText {
-      font-size: 24px;
-      margin: 20px 0;
-      display: none;
-    }
-
-    #photo {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 50%;
+      font-size: 26px;
       margin-top: 20px;
       display: none;
     }
 
     .message-box {
-      font-size: 20px;
-      padding: 20px;
+      display: none;
       margin: 20px auto;
-      width: 90%;
+      padding: 20px;
+      font-size: 20px;
       max-width: 600px;
       background-color: #fff5f5;
       border-radius: 10px;
-      display: none;
       animation: slideUp 0.8s forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     #navButtons {
@@ -68,17 +70,6 @@
       background-color: #ff66a3;
     }
 
-    @keyframes slideUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
     .confetti {
       position: fixed;
       width: 10px;
@@ -94,17 +85,26 @@
         opacity: 0;
       }
     }
+
+    #photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: none;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Audio (looped) -->
+  <!-- Background Music -->
   <audio id="bgMusic" src="happy.mp3" loop></audio>
 
-  <!-- Input Section -->
+  <!-- Name Input Area -->
   <div id="input-area">
     <h2>Enter Your Friend's Name</h2>
-    <input type="text" id="nameInput" placeholder="e.g. Rupa">
+    <input type="text" id="nameInput" placeholder="e.g. Suma">
     <button onclick="generateLink()">Generate Wish Link</button>
     <div id="linkBox" style="margin-top: 20px; display: none;">
       <p>Copy & share this link:</p>
@@ -115,16 +115,16 @@
   <!-- Gift Box -->
   <div class="gift-box" id="gift">🎁</div>
 
-  <!-- Friend Photo -->
-  <img id="photo" src="suma.jpg" alt="Friend Photo" />
+  <!-- Friend Pic -->
+  <img id="photo" src="suma.jpg" alt="Friend's Photo" />
 
-  <!-- Happy Birthday Title -->
+  <!-- Happy Birthday Text -->
   <h2 id="titleText"></h2>
 
-  <!-- Message -->
+  <!-- Message Box -->
   <div class="message-box" id="messageBox"></div>
 
-  <!-- Navigation -->
+  <!-- Navigation Buttons -->
   <div id="navButtons">
     <button onclick="prevMessage()">⬅️ Previous</button>
     <button onclick="nextMessage()">Next ➡️</button>
@@ -150,6 +150,7 @@
     const titleText = document.getElementById('titleText');
     const navButtons = document.getElementById('navButtons');
     const photo = document.getElementById('photo');
+    const music = document.getElementById('bgMusic');
 
     if (name) {
       inputArea.style.display = 'none';
@@ -174,11 +175,8 @@
       messageBox.style.display = 'block';
       navButtons.style.display = 'block';
       showMessage();
+      music.play();
 
-      // Play music
-      document.getElementById('bgMusic').play();
-
-      // Confetti
       for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
