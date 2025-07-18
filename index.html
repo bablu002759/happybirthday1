@@ -1,154 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎁 Birthday Surprise</title>
+  <meta charset="UTF-8">
+  <title>Happy Birthday</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #ffe6f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #ffcccc, #ffe6f0);
       text-align: center;
+      padding: 20px;
     }
 
-    input[type="text"] {
-      padding: 10px;
-      font-size: 18px;
-      border: 2px solid #d63384;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    button {
-      margin: 10px 5px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background: #d63384;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .link-box {
-      margin-top: 20px;
-      background: #fff;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: none;
+    #input-area {
+      margin-top: 100px;
     }
 
     .gift-box {
-      font-size: 100px;
+      font-size: 80px;
       cursor: pointer;
-      transition: transform 0.3s ease;
       display: none;
     }
 
-    .gift-box:hover {
-      transform: scale(1.1);
+    #titleText {
+      font-size: 24px;
+      margin: 20px 0;
+      display: none;
+    }
+
+    #photo {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: 20px;
+      display: none;
     }
 
     .message-box {
-      max-width: 90%;
-      background: white;
-      color: #444;
       font-size: 20px;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-top: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+      background-color: #fff5f5;
+      border-radius: 10px;
       display: none;
       animation: slideUp 0.8s forwards;
     }
 
+    #navButtons {
+      display: none;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 10px;
+      border: none;
+      background-color: #ff99cc;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff66a3;
+    }
+
     @keyframes slideUp {
       from {
-        transform: translateY(40px);
+        transform: translateY(20px);
         opacity: 0;
       }
       to {
-        transform: translateY(0px);
+        transform: translateY(0);
         opacity: 1;
       }
     }
 
-    #navButtons {
-      display: none;
-    }
-
     .confetti {
-      position: absolute;
+      position: fixed;
       width: 10px;
       height: 10px;
-      background-color: #ff69b4;
-      animation: fall 3s linear infinite;
-      top: -10px;
+      top: 0;
+      animation: fall 4s linear infinite;
+      z-index: 1000;
     }
 
     @keyframes fall {
       to {
-        transform: translateY(110vh) rotateZ(360deg);
+        transform: translateY(100vh);
+        opacity: 0;
       }
-    }
-
-    #friendPhoto {
-      max-width: 200px;
-      border-radius: 10px;
-      display: none;
-      margin: 20px auto;
-    }
-
-    #titleText {
-      color: #d63384;
-      font-size: 24px;
-      margin-top: 15px;
-      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Name input area -->
+  <!-- Audio (looped) -->
+  <audio id="bgMusic" src="happy.mp3" loop></audio>
+
+  <!-- Input Section -->
   <div id="input-area">
-    <h1>🎉 Enter your friend's name</h1>
-    <input type="text" id="nameInput" placeholder="e.g. Suma"/>
-    <br/>
-    <button onclick="generateLink()">Generate Link</button>
-    <div class="link-box" id="linkBox">
-      🎁 Share this link:<br>
+    <h2>Enter Your Friend's Name</h2>
+    <input type="text" id="nameInput" placeholder="e.g. Rupa">
+    <button onclick="generateLink()">Generate Wish Link</button>
+    <div id="linkBox" style="margin-top: 20px; display: none;">
+      <p>Copy & share this link:</p>
       <a id="generatedLink" href="#" target="_blank"></a>
     </div>
   </div>
 
-  <!-- Gift box -->
+  <!-- Gift Box -->
   <div class="gift-box" id="gift">🎁</div>
 
-  <!-- Friend's photo -->
-  <img id="friendPhoto" src="suma.jpg" alt="Friend's Photo" />
+  <!-- Friend Photo -->
+  <img id="photo" src="suma.jpg" alt="Friend Photo" />
 
-  <!-- Happy Birthday Name -->
+  <!-- Happy Birthday Title -->
   <h2 id="titleText"></h2>
 
-  <!-- Message Box -->
+  <!-- Message -->
   <div class="message-box" id="messageBox"></div>
 
-  <!-- Navigation Buttons -->
+  <!-- Navigation -->
   <div id="navButtons">
     <button onclick="prevMessage()">⬅️ Previous</button>
     <button onclick="nextMessage()">Next ➡️</button>
   </div>
-
-  <!-- Background Music -->
-  <audio id="bgMusic" src="happy.mp3"></audio>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -169,8 +149,7 @@
     const messageBox = document.getElementById('messageBox');
     const titleText = document.getElementById('titleText');
     const navButtons = document.getElementById('navButtons');
-    const friendPhoto = document.getElementById('friendPhoto');
-    const bgMusic = document.getElementById('bgMusic');
+    const photo = document.getElementById('photo');
 
     if (name) {
       inputArea.style.display = 'none';
@@ -189,14 +168,17 @@
 
     gift.addEventListener('click', () => {
       gift.style.display = 'none';
-      friendPhoto.style.display = 'block';
+      photo.style.display = 'block';
       titleText.innerText = `🎉 Happy Birthday ${decodeURIComponent(name)}!`;
       titleText.style.display = 'block';
       messageBox.style.display = 'block';
       navButtons.style.display = 'block';
       showMessage();
-      bgMusic.play();
 
+      // Play music
+      document.getElementById('bgMusic').play();
+
+      // Confetti
       for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
@@ -229,6 +211,5 @@
       }
     }
   </script>
-
 </body>
 </html>
