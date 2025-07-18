@@ -1,82 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Birthday Wish</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive;
-      background-color: #ffe6f0;
+      font-family: Arial, sans-serif;
       text-align: center;
+      background: linear-gradient(to right, #ffd1dc, #ffe4e1);
       padding: 20px;
     }
 
-    #input-area {
-      margin-top: 80px;
-    }
-
     .gift-box {
-      font-size: 80px;
+      font-size: 100px;
       cursor: pointer;
-      display: none;
-      margin-top: 50px;
+      margin-top: 30px;
     }
 
     #titleText {
-      font-size: 26px;
-      margin-top: 20px;
+      font-size: 28px;
+      margin-top: 10px;
       display: none;
     }
 
     .message-box {
-      display: none;
-      margin: 20px auto;
-      padding: 20px;
       font-size: 20px;
-      max-width: 600px;
-      background-color: #fff5f5;
-      border-radius: 10px;
-      animation: slideUp 0.8s forwards;
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+      margin-top: 20px;
+      min-height: 80px;
+      display: none;
     }
 
     #navButtons {
-      display: none;
       margin-top: 20px;
-    }
-
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      margin: 5px;
-      border-radius: 10px;
-      border: none;
-      background-color: #ff99cc;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #ff66a3;
+      display: none;
     }
 
     .confetti {
       position: fixed;
+      top: 0;
       width: 10px;
       height: 10px;
-      top: 0;
-      animation: fall 4s linear infinite;
-      z-index: 1000;
+      animation: fall linear forwards;
+      z-index: 999;
     }
 
     @keyframes fall {
@@ -86,43 +52,29 @@
       }
     }
 
-    #photo {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
+    .friend-photo {
+      width: 150px;
+      height: 150px;
       object-fit: cover;
+      border-radius: 50%;
+      margin: 20px auto 10px;
       display: none;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Music -->
-  <audio id="bgMusic" src="happy.mp3" loop></audio>
+  <!-- Friend photo -->
+  <img src="suma.jpg" alt="Friend" class="friend-photo" id="friendPic" />
 
-  <!-- Name Input Area -->
-  <div id="input-area">
-    <h2>Enter Your Friend's Name</h2>
-    <input type="text" id="nameInput" placeholder="e.g. Suma">
-    <button onclick="generateLink()">Generate Wish Link</button>
-    <div id="linkBox" style="margin-top: 20px; display: none;">
-      <p>Copy & share this link:</p>
-      <a id="generatedLink" href="#" target="_blank"></a>
-    </div>
-  </div>
-
-  <!-- Gift Box -->
-  <div class="gift-box" id="gift">🎁</div>
-
-  <!-- Friend Pic -->
-  <img id="photo" src="suma.jpg" alt="Friend's Photo" />
-
-  <!-- Happy Birthday Text -->
+  <!-- Happy Birthday Name -->
   <h2 id="titleText"></h2>
 
   <!-- Message Box -->
   <div class="message-box" id="messageBox"></div>
+
+  <!-- Gift box only -->
+  <div class="gift-box" id="gift">🎁</div>
 
   <!-- Navigation Buttons -->
   <div id="navButtons">
@@ -130,10 +82,12 @@
     <button onclick="nextMessage()">Next ➡️</button>
   </div>
 
+  <!-- Music player (hidden) -->
+  <audio id="birthdayMusic" src="happy.mp3" loop></audio>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const name = params.get('name');
-
     const messages = [
       "Happy Birthday to my officially licensed jogra partner! 😜",
       "Tor loge jodi ami kunudin na mati taile amar kache dinta osompurno lage —",
@@ -144,39 +98,28 @@
 
     let currentIndex = 0;
 
-    const inputArea = document.getElementById('input-area');
     const gift = document.getElementById('gift');
     const messageBox = document.getElementById('messageBox');
     const titleText = document.getElementById('titleText');
     const navButtons = document.getElementById('navButtons');
-    const photo = document.getElementById('photo');
-    const music = document.getElementById('bgMusic');
+    const friendPic = document.getElementById('friendPic');
+    const music = document.getElementById('birthdayMusic');
 
     if (name) {
-      inputArea.style.display = 'none';
       gift.style.display = 'block';
-    }
-
-    function generateLink() {
-      const inputName = document.getElementById('nameInput').value.trim();
-      if (inputName) {
-        const link = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(inputName)}`;
-        document.getElementById('generatedLink').href = link;
-        document.getElementById('generatedLink').innerText = link;
-        document.getElementById('linkBox').style.display = 'block';
-      }
     }
 
     gift.addEventListener('click', () => {
       gift.style.display = 'none';
-      photo.style.display = 'block';
+      friendPic.style.display = 'block';
       titleText.innerText = `🎉 Happy Birthday ${decodeURIComponent(name)}!`;
       titleText.style.display = 'block';
       messageBox.style.display = 'block';
       navButtons.style.display = 'block';
-      showMessage();
       music.play();
+      showMessage();
 
+      // Confetti animation
       for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
@@ -209,5 +152,6 @@
       }
     }
   </script>
+
 </body>
 </html>
